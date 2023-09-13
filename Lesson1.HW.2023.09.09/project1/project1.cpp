@@ -1,10 +1,10 @@
 ﻿#include <iostream>
-using namespace std;
-int main()
+
+int main(int argc, char* argv[])
 {
 	int a, b;
-	cin >> a;
-	cin >> b;
-	cout << (a + b);
+	std:: cin >> a;
+	std:: cin >> b;
+	std:: cout << (a + b);
 	return 0;
 }

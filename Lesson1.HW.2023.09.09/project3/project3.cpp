@@ -1,11 +1,11 @@
 ﻿#include <iostream>
-using namespace std;
-int main()
+
+int main(int argc, char* argv[])
 {
 	long long a;
-	cin >> a;
-	int b = a / 10;
-	int c = b * (b + 1);
-	cout << c * 100 + 25;
+	std::cin >> a;
+	long long b = a / 10;
+	long long c = b * (b + 1);
+	std::cout << c * 100 + 25;
 	return 0;
 }

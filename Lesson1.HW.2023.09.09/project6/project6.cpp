@@ -1,11 +1,11 @@
 ﻿#include <iostream>
-using namespace std;
-int main()
+
+int main(int argc, char* argv[])
 {
 	int a, b;
-	cin >> a >> b;
-	int c = a / b;
-	int d = b / a;
-	cout << (a*c + b * d) / (c + d);
+	std::cin >> a >> b;
+	int c = a / (b);
+	int d = b / (a);
+	std::cout << (a*c + b * d) / (c + d);
 	return 0;
 }

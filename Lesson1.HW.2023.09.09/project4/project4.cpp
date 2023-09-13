@@ -1,10 +1,10 @@
 ﻿#include <iostream>
-using namespace std;
-int main()
+
+int main(int argc, char* argv[])
 {
 	int a;
-	cin >> a;
-	cout << a * 100 + 90 + 9 - a;
+	std::cin >> a;
+	std::cout << a * 100 + 90 + 9 - a;
 	return 0;
 
 }
