@@ -2,8 +2,9 @@
 
 int main(int argc, char* argv[])
 {
-	int v, t;
+	int v;
+	int t;
 	std::cin >> v >> t;
-	std::cout << ((v*t)%109+109)%109+1;
+	std::cout << ((v * t) % 109 + 109) % 109 + 1;
 	return 0;
 }
