@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[])
 {
-	long long a;
+	long long a = 0;
 	std::cin >> a;
 	long long b = a / 10;
 	long long c = b * (b + 1);

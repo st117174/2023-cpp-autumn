@@ -2,7 +2,8 @@
 
 int main(int argc, char* argv[])
 {
-	int a, b;
+	int a = 0;
+	int b = 0;
 	std::cin >> a >> b;
 	int c = a / b;
 	int d = b / a;
