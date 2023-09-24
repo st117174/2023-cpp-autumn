@@ -20,15 +20,15 @@ int main(int argc, char* argv[])
 	}
 	else if (n > k)
 	{
-		l = n / k;
-		p = n % k;
-		if (p > 0)
+		l = n * 2 / k;
+		p = n * 2 % k;
+		if (p == 0)
 		{
-			a = 2 * l * m + m;
+			a = m * l;
 		}
-		else if (p == 0)
+		else if (p != 0)
 		{
-			a = 2 * l * m;
+			a = m * (1 + l);
 		}
 	}
 	std::cout << a << std::endl;
