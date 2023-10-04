@@ -1,25 +1,30 @@
 ﻿#include <iostream>
 
-int power(int k)
-{
-	int c = 1;
-	for (int i = 0; i < k; i++)
-	{
-		c = c * 2;
-	}
-	return c;
-}
 
-int main(int argc, int argv[])
+int main(int argc, char* argv[])
 {
 	int a = 0;
 	std::cin >> a;
-	int i = 0;
 	int k = 0;
-	for (i = 0; power(i) < a; i++)
+	int c = 0;
+	int n = 0;
+	if (a == 1)
 	{
-		k++;
+		std::cout << 0;
 	}
-	std::cout << k++;
+	else
+	{
+		while (c < a)
+		{
+			++n;
+			c = 1;
+			for (int i = 0; i < n; ++i)
+			{
+				c = c * 2;
+			}
+			++k;
+		}
+		std::cout << k++;
+	}
 	return EXIT_SUCCESS;
 }

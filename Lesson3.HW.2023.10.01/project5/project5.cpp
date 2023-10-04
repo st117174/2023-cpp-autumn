@@ -1,19 +1,5 @@
 ﻿#include <iostream>
 
-int symm(int a)
-{
-	int x = 0;
-	int n = 0;
-	while (a > 0)
-	{
-		n *= 10;
-		x = (a % 10);
-		n += x;
-
-		a = a / 10;
-	}
-	return n;
-}
 int main(int argc, char* argv[])
 {
 	int k = 0;
@@ -22,7 +8,18 @@ int main(int argc, char* argv[])
 	int n = 0;
 	while (x <= k)
 	{
-		if (x == symm(x))
+		int m = 0;
+		int g = 0;
+		int l = 0;
+		g = x;
+		while (g > 0)
+		{
+			m *= 10;
+			l = (g % 10);
+			m += l;
+			g = g / 10;
+		}
+		if (x == m)
 		{
 			n++;
 		}
