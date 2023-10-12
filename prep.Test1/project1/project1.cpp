@@ -1,4 +1,4 @@
-﻿#include <iostream>
+﻿﻿#include <iostream>
 
 typedef unsigned int uint;
 
@@ -7,7 +7,7 @@ int main(int argc, char**)
     uint a = 0;
     std::cin >> a;
     const int BITS = sizeof(uint) * 8;
-    
+
     {
         for (int i = 0; i < BITS; ++i)
         {
@@ -25,7 +25,7 @@ int main(int argc, char**)
         std::cout << sumbits << std::endl << std::endl;
     }
 
-    {				  
+    {
         uint a1 = 0;
         std::cin >> a1;
         uint b = 0;
