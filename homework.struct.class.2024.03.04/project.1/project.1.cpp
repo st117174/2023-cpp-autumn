@@ -1,108 +1,315 @@
-﻿﻿#include <iostream>
+﻿#include<iostream>
+
+struct SEdge {
+	int a;
+	int b;
+	int w;
+	SEdge(int a = 0, int b = 0, int w = 1) : a(a), b(b), w(w) {}
+	SEdge(const SEdge& src) : a(src.a), b(src.b), w(src.w) {}
+	~SEdge() {}
+	void set(int a, int b, int w)
+	{
+		this->a = a;
+		this->b = b;
+		this->w = w;
+	}
+	friend std::ostream& operator<<(std::ostream& stream, const SEdge& edge);
+};
 
 class CGraph {
-
 public:
-
-	void inputEdges(int a[101][101]);
-	void traffic_lights(int a[101][101], int n);
+	CGraph();
+	CGraph(int vertexes, int edges);
+	~CGraph();
+	void PrintMatrix();
+	void PrintEdges();
+	void ReadMatrix(int vertexes, std::istream& stream);
+	void ReadEdges(int edges, std::istream& stream, bool haveweight = false);
+	int edgesCount();
+	int roadsCount();
+	int vertexCount();
+	int power(int vertex);
+	bool isTour();
 
 private:
+	void init();
+	void initMatrix();
+	void initEdges();
+	void initMatrixFromEdges();
+	void initEdgesFromMatrix();
+	int getVertexesCountFromEdges();
+	int getEdgesCountFromMatrix();
+	void dispose();
+	void disposeMatrix();
+	void disposeEdges();
 
-	void outputMatrix(int a[101][101], int n);
-	void inputMatrix(int a[101][101], int& n);
-	void outputEdges(int a[101][101], int n);
-
+	int _vertexes;
+	int _edges;
+	int** _matrix;
+	SEdge* _edge;
 };
 
 int main(int argc, char* argv[])
 {
-	int a[101][101]{ 0 };
-	int n = 0;
-
-	CGraph Graph;
-
-	Graph.inputEdges(a);
-	Graph.traffic_lights(a, n);
-
-	return 0;
+	int v = 0;
+	std::cin >> v;
+	CGraph g(v, 0);
+	g.ReadMatrix(v, std::cin);
+	std::cout << g.roadsCount();
+	return EXIT_SUCCESS;
 }
 
-void CGraph::outputMatrix(int a[101][101], int n)
+
+CGraph::CGraph()
+	: _vertexes(0), _edges(0), _matrix(nullptr), _edge(nullptr) {}
+
+CGraph::CGraph(int vertexes, int edges)
+	: _vertexes(vertexes), _edges(edges), _matrix(nullptr), _edge(nullptr)
 {
-	for (int i = 1; i <= n; ++i)
+	init();
+}
+
+CGraph::~CGraph()
+{
+	dispose();
+}
+
+void CGraph::PrintMatrix()
+{
+	if (_matrix == nullptr)
 	{
-		for (int j = 1; j <= n; ++j)
+		if (_edge == nullptr)
 		{
-			std::cout << a[i][j] << " ";
+			std::cout << "Graph empty" << std::endl;
+			return;
+		}
+		initMatrixFromEdges();
+	}
+	for (int i = 0; i < _vertexes; ++i)
+	{
+		for (int j = 0; j < _vertexes; ++j)
+		{
+			std::cout << _matrix[i][j] << " ";
 		}
 		std::cout << std::endl;
 	}
 }
 
-void CGraph::traffic_lights(int a[101][101], int n)
+void CGraph::PrintEdges()
 {
-	int count = 0;
-	for (int i = 1; i <= n; i++)
+	if (_edge == nullptr)
 	{
-		for (int j = 1; j <= n; j++)
+		if (_matrix == nullptr)
 		{
-			count += a[i][j];
+			std::cout << "Graph empty" << std::endl;
+			return;
 		}
-		std::cout << count << " ";
-		count = 0;
+		initEdgesFromMatrix();
+	}
+	for (int i = 0; i < _edges; ++i)
+	{
+		std::cout << _edge[i] << std::endl;
 	}
 }
 
-void CGraph::outputEdges(int a[101][101], int n)
+void CGraph::ReadMatrix(int vertexes, std::istream& stream)
 {
-	int m = 0;
-	for (int i = 1; i <= n; ++i)
+	_vertexes = vertexes;
+	initMatrix();
+	for (int i = 0; i < _vertexes; ++i)
 	{
-		for (int j = 1; j <= n; ++j)
+		for (int j = 0; j < _vertexes; ++j)
 		{
-			m += a[i][j];
+			stream >> _matrix[i][j];
 		}
 	}
-	std::cout << n << " " << m << std::endl;
-	for (int i = 1; i <= n; ++i)
+	initEdgesFromMatrix();
+}
+
+void CGraph::ReadEdges(int edges, std::istream& stream, bool haveweight)
+{
+	_edges = edges;
+	initEdges();
+	for (int i = 0; i < _edges; ++i)
 	{
-		for (int j = 1; j <= n; ++j)
+		stream >> _edge[i].a >> _edge[i].b;
+		if (haveweight)
 		{
-			if (a[i][j] == 1)
+			stream >> _edge[i].w;
+		}
+	}
+	initMatrixFromEdges();
+}
+
+int CGraph::edgesCount()
+{
+	if (_edge == nullptr)
+	{
+		initEdgesFromMatrix();
+	}
+	return _edges;
+}
+
+int CGraph::roadsCount()
+{
+	return edgesCount() / 2;
+}
+
+int CGraph::vertexCount()
+{
+	if (_matrix == nullptr)
+	{
+		initMatrixFromEdges();
+	}
+	return _vertexes;
+}
+
+int CGraph::power(int vertex)
+{
+	int r = 0;
+	for (int i = 0; i < vertexCount(); ++i)
+	{
+		r += (_matrix[vertex][i] != 0);
+	}
+	return r;
+}
+
+bool CGraph::isTour()
+{
+	for (int i = 0; i < vertexCount(); ++i)
+	{
+		int c = 0;
+		for (int j = 0; j < vertexCount(); ++j)
+		{
+			if (_matrix[i][j] + _matrix[j][i] == 2)
 			{
-				std::cout << i << " " << j << std::endl;
+				return false;
+			}
+			c += (_matrix[i][j] | _matrix[j][i]);
+		}
+		if (c != vertexCount() - 1)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+void CGraph::init()
+{
+	dispose();
+	initMatrix();
+	initEdges();
+}
+
+void CGraph::initMatrix()
+{
+	if (_vertexes == 0)
+	{
+		return;
+	}
+	_matrix = new int* [_vertexes];
+	for (int i = 0; i < _vertexes; ++i)
+	{
+		_matrix[i] = new int[_vertexes] { 0 };
+	}
+}
+
+void CGraph::initEdges()
+{
+	if (_edges == 0)
+	{
+		return;
+	}
+	_edge = new SEdge[_edges];
+}
+
+void CGraph::initMatrixFromEdges()
+{
+	disposeMatrix();
+	_vertexes = getVertexesCountFromEdges();
+	initMatrix();
+	for (int i = 0; i < _edges; ++i)
+	{
+		_matrix[_edge[i].a][_edge[i].b] = _edge[i].w;
+	}
+}
+
+int CGraph::getEdgesCountFromMatrix()
+{
+	int count = 0;
+	for (int i = 0; i < _vertexes; ++i)
+	{
+		for (int j = 0; j < _vertexes; ++j)
+		{
+			count += (_matrix[i][j] != 0);
+		}
+	}
+	return count;
+}
+
+void CGraph::dispose()
+{
+	disposeMatrix();
+	disposeEdges();
+}
+
+void CGraph::disposeMatrix()
+{
+	if (_matrix != nullptr)
+	{
+		for (int i = 0; i < _vertexes; ++i)
+		{
+			delete[] _matrix[i];
+		}
+		delete[] _matrix;
+		_matrix = nullptr;
+	}
+}
+
+void CGraph::disposeEdges()
+{
+	if (_edge != nullptr)
+	{
+		delete[] _edge;
+		_edge = nullptr;
+	}
+}
+
+void CGraph::initEdgesFromMatrix()
+{
+	disposeEdges();
+	_edges = getEdgesCountFromMatrix();
+	initEdges();
+	for (int i = 0, k = 0; i < _vertexes && k < _edges; ++i)
+	{
+		for (int j = 0; j < _vertexes && k < _edges; ++j)
+		{
+			if (_matrix[i][j] != 0)
+			{
+				_edge[k++].set(i + 1, j + 1, _matrix[i][j]);
 			}
 		}
 	}
 }
 
-void CGraph::inputEdges(int a[101][101])
+int CGraph::getVertexesCountFromEdges()
 {
-	int n = 0;
-	std::cin >> n;
-	int m = 0;
-	std::cin >> m;
-	for (int i = 0; i < m; ++i)
+	int res = 0;
+	for (int i = 0; i < _edges; ++i)
 	{
-		int s = 0;
-		int e = 0;
-		std::cin >> s >> e;
-		a[s][e] += 1;
-		a[e][s] += 1;
+		res = (res > _edge[i].a ? res : _edge[i].a);
+		res = (res > _edge[i].b ? res : _edge[i].b);
 	}
-
-	traffic_lights(a, n);
+	return res + 1;
 }
 
-void CGraph::inputMatrix(int a[101][101], int& n)
+std::ostream& operator<<(std::ostream& stream, const SEdge& edge)
 {
-	std::cin >> n;
-	for (int i = 1; i <= n; ++i)
+	stream << edge.a << " " << edge.b;
+	if (edge.w > 1)
 	{
-		for (int j = 1; j <= n; ++j)
-		{
-			std::cin >> a[i][j];
-		}
+		stream << " " << edge.w;
 	}
+	return stream;
 }
