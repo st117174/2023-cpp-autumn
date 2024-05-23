@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{937935c3-01f8-4f22-bc24-b7dc04e30a11}</ProjectGuid>
-    <RootNamespace>Courseproject</RootNamespace>
+    <ProjectGuid>{be8e0dde-ce2c-46bb-a8e9-18860178201d}</ProjectGuid>
+    <RootNamespace>ConsoleApplication6</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -127,11 +127,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Course.project.cpp" />
-    <ClCompile Include="Cramersfunction.cpp" />
+    <ClCompile Include="ConsoleApplication6.cpp" />
+    <ClCompile Include="cramer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Cramer.h" />
+    <ClInclude Include="cramer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
