@@ -169,7 +169,8 @@ void outputSolutionStepsLaTeX(std::ofstream& outfile, CMatrix A, CVector b, doub
     }
 }
 
-void solveSystem(CMatrix A, CVector b, double* solutions, int n) {
+void solveSystem(CMatrix A, CVector b, double* solutions) {
+    int n = A.size();
     double detA = A.det();
     for (int i = 0; i < n; ++i) {
         CMatrix Ai = A;

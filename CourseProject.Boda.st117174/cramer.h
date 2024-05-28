@@ -43,6 +43,6 @@ void latexDet(std::ofstream& outfile, CMatrix A);
 double determinant(double** matrix, int n);
 void outputSystemLaTeX(std::ofstream& outfile, CMatrix A, CVector b);
 void outputSolutionStepsLaTeX(std::ofstream& outfile, CMatrix A, CVector b, double* solutions);
-void solveSystem(CMatrix A, CVector b, double* solutions, int n);
+void solveSystem(CMatrix A, CVector b, double* solutions);
 
 #endif
