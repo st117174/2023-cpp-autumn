@@ -2,43 +2,39 @@
 #include <iostream>
 #include <fstream>
 #include "cramer.h"
+#include <cstdlib>
 
 
 
-int main() {
+int main(int argc, char* argv[]) {
     int n;
     std::cout << "Enter the number of variables: ";
     std::cin >> n;
+    if (n <= 0)
+    {
+        std::cerr << "The number of variables must be more than zero!";
+    }
 
-    double** A = new double* [n];
-    double* b = new double[n];
+    CMatrix A(n);
+   CVector b(n);
     double* solutions = new double[n];
 
-    for (int i = 0; i < n; ++i) {
-        A[i] = new double[n];
-    }
-
+   
     std::cout << "Enter the coefficients of matrix A:" << std::endl;
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < n; ++j) {
-            std::cout << "Enter coefficient for x_" << j + 1 << " in equation " << i + 1 << ": ";
-            std::cin >> A[i][j];
-        }
-    }
+    A.initializeMatrix();
+    
 
     std::cout << "Enter the constants vector b:" << std::endl;
-    for (int i = 0; i < n; ++i) {
-        std::cout << "Enter constant for equation " << i + 1 << ": ";
-        std::cin >> b[i];
-    }
+    b.initializeVector();
+    
 
     std::ofstream outfile("solution.tex");
         outfile << "\\documentclass{article}\n\\usepackage{amsmath}\n\\begin{document}\n";
-        outfile << "\\section*{Complete Solution of the System of Linear Equations}\n";
-        outputSystemLaTeX(outfile, A, b, n);
+        outfile << "\\section*{Solution of the System of Linear Equations:}\n";
+        outputSystemLaTeX(outfile, A, b);
 
     double detA = 0;
-   detA = determinant(A, n); 
+   detA = A.det(); 
 
     if (detA == 0) {
         outfile << "\\text{The determinant of matrix of coefficients equals to zero. The system is unsolvable}\n";
@@ -51,10 +47,9 @@ int main() {
     {
         solveSystem(A, b, solutions, n);
 
-       
-        outfile << "\\section*{Solution using Cramer's Method}\n";
-        outputSolutionStepsLaTeX(outfile, A, b, solutions, n);
-        outfile << "\\section*{Answer}\n";
+        outfile << "\\section*{Solution using Cramer's Method:}\n";
+        outputSolutionStepsLaTeX(outfile, A, b, solutions);
+        outfile << "\\section*{Answer:}\n";
         outfile << "\\begin{equation}\n\\left\\{\\begin{array}{r}\n";
         for (int i = 0; i < n; ++i) {
             outfile << "x_{" << i + 1 << "} = " << solutions[i] << "\\\\\n";
@@ -63,7 +58,7 @@ int main() {
         outfile << "\\end{document}\n";
         outfile.close();
 
-        std::cout << "Solution written to solution.tex" << std::endl;
+        std::cout << "Solution written to solution.tex" << std::endl<< std::endl;
 
         std::cout << "Solution:" << std::endl;
         for (int i = 0; i < n; ++i) {
@@ -71,12 +66,22 @@ int main() {
         }
     }
 
-    for (int i = 0; i < n; ++i) {
-        delete[] A[i];
+    std::string fName = "solution.tex";
+
+    std::string command = "pdflatex " + fName;
+
+    int result = std::system(command.c_str());
+    if (result == 0) {
+        std::cout << "\n\nPDF file with compiled LaTeX code was generated and saved successfully.\n";
     }
-    delete[] A;
-    delete[] b;
+    else {
+        std::cout << "\n\nPDF was not generated due to the error.\n";
+    }
+
+    
+
+
     delete[] solutions;
 
-    return 0;
+    return EXIT_SUCCESS;
 }

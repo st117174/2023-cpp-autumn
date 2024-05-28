@@ -1,0 +1,43 @@
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+\section*{Solution of the System of Linear Equations:}
+\begin{equation}
+\left\{\begin{array}{rr}
+18x_{1} +9.4938x_{2}  = 58392 \\
+-0.0382x_{1} +8593x_{2}  = 93824 \\
+\end{array}\right.
+\end{equation}
+\section*{Solution using Cramer's Method:}
+\begin{equation}
+\text{Determinant of } A: \; \Delta = det\begin{vmatrix}
+18 & 9.4938\\
+-0.0382 & 8593\\
+\end{vmatrix} = 154674
+\end{equation}
+\begin{equation}
+\Delta_{1} = det\begin{vmatrix}
+58392 & 9.4938\\
+93824 & 8593\\
+\end{vmatrix} = 5.00872e+08
+\end{equation}
+\begin{equation}
+x_{1} = \frac{\Delta_{1}}{\Delta} = \frac{5.00872e+08}{154674} = 3238.23
+\end{equation}
+\begin{equation}
+\Delta_{2} = det\begin{vmatrix}
+18 & 58392\\
+-0.0382 & 93824\\
+\end{vmatrix} = 1.69106e+06
+\end{equation}
+\begin{equation}
+x_{2} = \frac{\Delta_{2}}{\Delta} = \frac{1.69106e+06}{154674} = 10.9331
+\end{equation}
+\section*{Answer:}
+\begin{equation}
+\left\{\begin{array}{r}
+x_{1} = 3238.23\\
+x_{2} = 10.9331\\
+\end{array}\right.
+\end{equation}
+\end{document}
